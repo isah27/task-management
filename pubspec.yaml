@@ -1,0 +1,55 @@
+name: task_management
+description: Task management app.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.2 <3.0.0'
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  sizer: ^2.0.15
+  device_preview: ^1.1.0
+  equatable: ^2.0.5
+  flutter_bloc: ^8.1.2
+  bloc: ^8.1.1
+  scroll_date_picker : 
+  intl: ^0.17.0
+  http: ^0.13.5
+  dio: ^5.1.0
+  firebase_core: ^2.9.0
+  cloud_firestore: ^4.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+ 
+  flutter_lints: ^2.0.0
+
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/
+  #   - images/a_dot_ham.jpeg
+
+ 
