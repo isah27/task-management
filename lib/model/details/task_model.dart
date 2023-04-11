@@ -3,7 +3,7 @@ class TaskModel {
   String? name;
   String? description;
   String? dueDate;
-  String? priority;
+  String? developer;
   String? status;
   String? createdDate;
 
@@ -12,7 +12,7 @@ class TaskModel {
     this.name,
     this.description,
     this.dueDate,
-    this.priority,
+    this.developer,
     this.status,
     this.createdDate,
   });
@@ -22,7 +22,7 @@ class TaskModel {
     name = json['name'];
     description = json['description'];
     dueDate = json['dueDate'];
-    priority = json['priority'];
+    developer = json['developer'];
     status = json['status'];
     createdDate = json['createdDate'];
   }
@@ -33,7 +33,7 @@ class TaskModel {
       'name': name,
       'description': description,
       'dueDate': dueDate,
-      'priority': priority,
+      'developer': developer,
       'status': status,
       'createdDate': createdDate,
     };

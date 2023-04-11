@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_management/bloc/cubit/task_cubit.dart';
 import 'package:task_management/components/components.dart';
@@ -117,7 +116,7 @@ class TaskDetailPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(size.width * 0.02),
                 ),
                 child: AppText(
-                  text: "Priority: ${task.priority}",
+                  text: "Developer: ${task.developer}",
                   textColor: Colors.black.withOpacity(0.9),
                   fontWeight: FontWeight.w800,
                   size: 20.sp,
@@ -125,36 +124,6 @@ class TaskDetailPage extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class BackNav extends StatelessWidget {
-  const BackNav({
-    super.key,
-    required this.size,
-  });
-
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.pop(context),
-      child: Container(
-        margin: EdgeInsets.only(left: size.width * 0.02),
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(size.width * 0.02),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.3),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          Icons.chevron_left,
-          size: size.width * 0.1,
-          color: Colors.white,
         ),
       ),
     );

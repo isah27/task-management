@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
               text: "Add Task",
               bgColor: AppColors.amber,
               onTap: () {
-                context.read<TaskCubit>().resetState();
+                context.read<TaskCubit>().getDevelopers();
                 Navigator.pushNamed(context, AppRoute.addTaskPage);
               },
             ),

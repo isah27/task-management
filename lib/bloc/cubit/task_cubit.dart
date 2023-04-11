@@ -13,17 +13,28 @@ class TaskCubit extends Cubit<TaskState> {
 
   List<TaskModel> tasks = [];
   TaskModel detaikTask = TaskModel();
-  String taskPriority = "Low";
+
+  String developer = 'select developer';
+  List<String> developers = ['select developer'];
+  List<TaskDeveloper> dbDeveloper = [];
+
   TextEditingController nameController = TextEditingController();
   TextEditingController detailController = TextEditingController();
 
-  Future<void> createTask({required TaskModel task}) async {
+  Future<void> createTask() async {
     emit(TaskLoadingState());
     try {
-      // task.priority = taskPriority;
-      // task.description = detailController.text;
-      // task.name = nameController.text;
-     await taskRepo.createTask(task: task);
+      var newTask = TaskModel();
+      newTask.name = nameController.text;
+      newTask.description = detailController.text;
+      newTask.developer = developer;
+
+      await taskRepo.createTask(task: newTask);
+      // reset the values back to the initial value
+      detailController.clear();
+      nameController.clear();
+      developer = 'select developer';
+      developers = ['select developer'];
       emit(TaskLoadedState(tasks: tasks));
     } catch (error) {
       emit(TaskErrorState(error: error.toString()));
@@ -33,7 +44,11 @@ class TaskCubit extends Cubit<TaskState> {
   Future<void> getTask() async {
     emit(TaskLoadingState());
     try {
+      if (developers.length==1) {
+        await getDevelopers();
+      }
       tasks = await taskRepo.readTasks();
+
       emit(TaskLoadedState(tasks: tasks));
     } catch (error) {
       emit(TaskErrorState(error: error.toString()));
@@ -43,8 +58,18 @@ class TaskCubit extends Cubit<TaskState> {
   Future<void> updateTask({required TaskModel task}) async {
     emit(TaskInitial());
     try {
-    await taskRepo.updateTask(task: task);
-    emit(TaskLoadedState(tasks: tasks));
+      if (detaikTask.name != null) {
+        task.developer = developer;
+        task.name = nameController.text;
+        task.description = detailController.text;
+      }
+      await taskRepo.updateTask(task: task);
+      detailController.clear();
+      nameController.clear();
+      developer = 'select developer';
+      developers = ['select developer'];
+      detaikTask = TaskModel();
+      emit(TaskLoadedState(tasks: tasks));
     } catch (error) {
       emit(TaskErrorState(error: error.toString()));
     }
@@ -53,7 +78,7 @@ class TaskCubit extends Cubit<TaskState> {
   Future<void> deleteTask({required TaskModel task}) async {
     emit(TaskDeletingdState());
     try {
-       await taskRepo.deleteTask(id: task.sId!);
+      await taskRepo.deleteTask(id: task.sId!);
       tasks.remove(task);
       emit(TaskDeletedState());
       emit(TaskInitial());
@@ -67,22 +92,30 @@ class TaskCubit extends Cubit<TaskState> {
     detaikTask = task;
     nameController.text = detaikTask.name ?? "";
     detailController.text = detaikTask.description ?? "";
+    developer = task.developer ?? "";
     emit(TaskDetailState());
   }
 
-  Future<void> changeTaskPriority({required String priority}) async {
-    if (state is TaskDetailState) {
-      emit(TaskLoadingState());
-      taskPriority = priority;
-      emit(TaskDetailState());
-    } else {
-      emit(TaskInitial());
-      taskPriority = priority;
-      emit(TaskLoadingState());
-    }
+  Future<void> changeTaskDeveloper({required String dev}) async {
+    emit(TaskLoadingState());
+    developer = dev;
+    emit(TaskDetailState());
   }
 
-  resetState() {
-    emit(TaskInitial());
+  Future<void> getDevelopers() async {
+    emit(TaskLoadingState());
+    developer = 'select developer';
+    developers = ['select developer'];
+    try {
+      dbDeveloper = await taskRepo.readDeveloper();
+      for (var developer in dbDeveloper) {
+        if (developer.name != null) {
+          developers.add(developer.name!);
+        }
+      }
+      emit(TaskInitial());
+    } catch (error) {
+      emit(TaskErrorState(error: error.toString()));
+    }
   }
 }

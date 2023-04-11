@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_management/model/details/task_model.dart';
 import '../../bloc/cubit/task_cubit.dart';
 import '../../components/components.dart';
 import '../../constant/app_constant.dart';
@@ -13,11 +12,10 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  String initValue = "Low";
   @override
   Widget build(BuildContext context) {
     final task = context.watch<TaskCubit>().detaikTask;
-    final priority = context.watch<TaskCubit>().taskPriority;
+    final priority = context.watch<TaskCubit>().developer;
     final taskCubit = context.read<TaskCubit>();
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -34,14 +32,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 controller: taskCubit.nameController,
               ),
               SizedBox(height: size.height * 0.02),
-              // task importance text field
+              // task developer text field
               AppDropdownInput(
                 size: size,
-                hintText: "Task Priority",
+                hintText: "Developer",
                 onChanged: (value) {
-                  taskCubit.changeTaskPriority(priority: value!);
+                  taskCubit.changeTaskDeveloper(dev: value!);
                 },
-                options: const ["Low", "High"],
+                options: taskCubit.developers,
                 value: priority,
               ),
               SizedBox(height: size.height * 0.02),
@@ -58,27 +56,21 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 builder: (context, state) {
                   return AppButton(
                     size: size,
-                    text: "Add",
+                    text: state is TaskLoadingState
+                        ? "Processing..."
+                        : task.name != null
+                            ? "Update Task"
+                            : "Add",
                     bgColor: AppColors.amber,
                     onTap: () {
-                      if (state is TaskDetailState) {
-                        task.description = taskCubit.detailController.text;
-                        task.name = taskCubit.nameController.text;
-                        task.priority = priority;
-                        context.read<TaskCubit>().updateTask(task: task);
-                        taskCubit.nameController.clear();
-                        taskCubit.detailController.clear();
-                      } else {
-                        var newTask = TaskModel();
-                        newTask.name = taskCubit.nameController.text;
-                        newTask.description = taskCubit.detailController.text;
-                        newTask.priority = priority;
-                        context.read<TaskCubit>().createTask(task: newTask);
-                        taskCubit.nameController.clear();
-                        taskCubit.detailController.clear();
+                      if (taskCubit.nameController.text != "" &&
+                          taskCubit.detailController.text != "") {
+                        if (task.name != null) {
+                          context.read<TaskCubit>().updateTask(task: task);
+                        } else {
+                          context.read<TaskCubit>().createTask();
+                        }
                       }
-                      taskCubit.nameController.clear();
-                      taskCubit.detailController.clear();
                     },
                   );
                 },

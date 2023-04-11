@@ -123,7 +123,7 @@ class ButtonAndTaskCounter extends StatelessWidget {
         SizedBox(width: size.width * 0.015),
         InkWell(
           onTap: () {
-            context.read<TaskCubit>().resetState();
+            context.read<TaskCubit>().getDevelopers();
             Navigator.pushNamed(context, AppRoute.addTaskPage);
           },
           child: Container(
@@ -310,6 +310,35 @@ class TaskText extends StatelessWidget {
             fontWeight: FontWeight.bold,
             size: 12.sp,
           ),
+        ),
+      ),
+    );
+  }
+}
+class BackNav extends StatelessWidget {
+  const BackNav({
+    super.key,
+    required this.size,
+  });
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.pop(context),
+      child: Container(
+        margin: EdgeInsets.only(left: size.width * 0.02),
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(size.width * 0.02),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.3),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.chevron_left,
+          size: size.width * 0.1,
+          color: Colors.white,
         ),
       ),
     );

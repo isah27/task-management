@@ -70,7 +70,6 @@ showCustomDatePicker(
                             bgColor: Colors.blue.shade900,
                             onTap: () {
                               task.status = "s";
-                              task.dueDate = DateTime.now().toString();
                               context.read<TaskCubit>().updateTask(task: task);
                               Navigator.pop(context);
                             },
@@ -97,6 +96,7 @@ showCustomDatePicker(
                         ),
                         maximumDate: DateTime.utc(DateTime.now().year + 10),
                         onDateTimeChanged: (date) {
+                          task.dueDate = date.toString();
                           readTaskCubit.changeDate(date);
                         },
                       ),
