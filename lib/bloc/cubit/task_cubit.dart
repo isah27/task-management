@@ -23,11 +23,7 @@ class TaskCubit extends Cubit<TaskState> {
       // task.priority = taskPriority;
       // task.description = detailController.text;
       // task.name = nameController.text;
-      final newTask = await taskRepo.createTask(task: task);
-      print(newTask!.toJson());
-      if (newTask != null) {
-        tasks.add(newTask);
-      }
+     await taskRepo.createTask(task: task);
       emit(TaskLoadedState(tasks: tasks));
     } catch (error) {
       emit(TaskErrorState(error: error.toString()));
@@ -47,11 +43,8 @@ class TaskCubit extends Cubit<TaskState> {
   Future<void> updateTask({required TaskModel task}) async {
     emit(TaskInitial());
     try {
-      final updatedTask = await taskRepo.updateTask(task: task);
-      if (updatedTask != null) {
-        tasks[tasks.indexOf(task)] = updatedTask;
-      }
-      emit(TaskLoadedState(tasks: tasks));
+    await taskRepo.updateTask(task: task);
+    emit(TaskLoadedState(tasks: tasks));
     } catch (error) {
       emit(TaskErrorState(error: error.toString()));
     }
@@ -60,10 +53,8 @@ class TaskCubit extends Cubit<TaskState> {
   Future<void> deleteTask({required TaskModel task}) async {
     emit(TaskDeletingdState());
     try {
-      final response = await taskRepo.deleteTask(id: task.sId!);
-      if (response == "deleted") {
-        tasks.remove(task);
-      }
+       await taskRepo.deleteTask(id: task.sId!);
+      tasks.remove(task);
       emit(TaskDeletedState());
       emit(TaskInitial());
     } catch (error) {

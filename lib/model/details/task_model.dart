@@ -18,7 +18,7 @@ class TaskModel {
   });
 
   TaskModel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
+    sId = json['id'];
     name = json['name'];
     description = json['description'];
     dueDate = json['dueDate'];
@@ -29,7 +29,7 @@ class TaskModel {
 
   Map<String, String?> toJson() {
     return <String, String?>{
-      '_id': sId,
+      'id': sId,
       'name': name,
       'description': description,
       'dueDate': dueDate,
